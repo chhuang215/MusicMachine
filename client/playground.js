@@ -8,8 +8,9 @@ for(var i = 0 ; i < soundfiles.length; i++){
 	player[i].volume(0);
 }
 
-playSound = function(playerId, vol){
+playSound = function(playerId, vol, spd){
 	player[playerId].volume(vol);
+	player[playerId].speed(spd);
 }
 
 playAll = function() {

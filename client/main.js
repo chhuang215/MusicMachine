@@ -33,31 +33,29 @@ Template.playground.helpers({
       if(mm.start == 1){
         if (aSound && aSound.on) {
 
-          playSound(soundId, (mm.sound[soundId].volume/100) * (mm.masterVolume/100));
+          playSound(soundId, (aSound.volume/100) * (mm.masterVolume/100),(aSound.speed/50)*(mm.masterSlide/50));
 
           $("#"+soundId).removeClass('btn-default').addClass('btn-success');
-        } else {
-          playSound(soundId, 0);
-          $("#"+soundId).removeClass('btn-success').addClass('btn-default');
+
+          return;
         }
-      }else{
-          playSound(soundId, 0);
-          $("#"+soundId).removeClass('btn-success').addClass('btn-default');
-          if (aSound && aSound.on) {
-            aSound.on = false;
-            aSound.volume = 0;
-            var muteSound = {};
-            muteSound['sound.'+soundId] = aSound;
-            MusicMachine.update({_id:mm._id}, {$set: muteSound});
-          }
       }
+      playSound(soundId, 0, aSound.speed/50*(mm.masterSlide/50));
+      $("#"+soundId).removeClass('btn-success').addClass('btn-default');
+      if (aSound && aSound.on) {
+        aSound.on = false;
+        aSound.volume = 0;
+        var muteSound = {};
+        muteSound['sound.'+soundId] = aSound;
+        MusicMachine.update({_id:mm._id}, {$set: muteSound});
+      }
+
+
     }
-
-
   //  return status;
   },
   "startdac": function () {
-    Session.get('startdac');
+
     var mm = MusicMachine.findOne();
     if (mm) {
       if (mm.start==1) {
@@ -82,7 +80,6 @@ Template.playground.helpers({
       var masterSlide = mm.masterSlide;
         if(tmpl.view.isRendered){
           tmpl.$('#sliderSpeed').data('uiSlider').value(masterSlide);
-          setSpeed(masterSlide/50);
         }
         return (masterSlide/50).toFixed(2);
     }
@@ -100,7 +97,17 @@ Template.playground.helpers({
         return masterVolume;
     }
   },
-
+  "sliderSVal":  function(soundId) {
+    var mm = MusicMachine.findOne();
+    if (mm) {
+      var tmpl = Template.instance();
+      var speed = mm.sound[soundId].speed;
+        if(tmpl.view.isRendered){
+          tmpl.$('#'+soundId+'.sliderS').data('uiSlider').value(speed);
+        }
+        return speed;
+    }
+  },
   "sliderVVal":  function(soundId) {
     var mm = MusicMachine.findOne();
     if (mm) {
@@ -129,22 +136,28 @@ Template.playground.events({
   },
   "click .js-sound-onoff": function (e) {
     var mm = MusicMachine.findOne({});
-    var updateObj = {}
+    var sound = mm.sound;
     if(mm.start == 1){
       var soundId = e.target.id;
-      var isOn = mm.sound[soundId].on;
+
+      var isOn = sound[soundId].on;
 
       if(!isOn){
         Session.set('sound'+soundId, 1);
-        updateObj['sound.'+soundId] = {on:true, volume:100};
-        MusicMachine.update({ _id: mm._id}, {$set: updateObj});
-        return;
+        sound[soundId].on = true;
+        
+        sound[soundId].volume = 100;
+        MusicMachine.update({ _id: mm._id}, {$set: {sound:sound}});
+      }
+      else if(isOn){
+        Session.set('sound'+soundId, 0);
+        sound[soundId].on = false;
+        sound[soundId].volume = 0;
+        MusicMachine.update({ _id: mm._id}, {$set: {sound:sound}});
       }
     }
 
-    Session.set('sound'+soundId, 0);
-    updateObj['sound.'+soundId] = {on:false, volume:0};
-    MusicMachine.update({ _id: mm._id}, {$set: updateObj});
+
   }
 
   //  "click button.myButton1": function () {
