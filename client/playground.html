@@ -1,0 +1,51 @@
+<template name="playground">
+
+  <br><br>
+  <!-- Remember - if you want to control functions globaly, don't declare them as var. Just name them. -->
+  <button class="btn btn-primary js-start-dac">DAC</button> <button class="btn btn-warning js-stop-dac">Stop</button><br><br>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Master Volume : {{sliderVolumeVal}}%</h3>
+      <div class="slider" id="sliderVolume"></div>
+    </div>
+
+    <div class="col-sm-6">
+      <h3>Speed: {{sliderSpeedVal}}</h3>
+
+      <div class="slider" id="sliderSpeed"></div>
+    </div>
+
+  </div>
+
+   <h2> {{startdac}} </h2> <!--HIDDEN-->
+
+   <div class="row">
+      {{#each allSounds}}
+     <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-4 col-xs-3">
+                <br><button class="btn btn-default js-sound-onoff" id="{{@index}}">{{name}}</button> {{sound @index}}
+            </div>
+
+            <div class="col-sm-6 col-xs-7 col-sm-offset-1">
+                <div class="row">
+                  Volume: {{sliderVVal @index}}
+                  <div class="slider sliderV" id="{{@index}}"></div>
+                  Speed:
+                  <div class="slider sliderS" id="{{@index}}"></div>
+                </div>
+
+            </div>
+         </div>
+     </div>
+      {{/each}}
+   </div>
+
+
+
+
+  <br>
+
+
+
+</template>
