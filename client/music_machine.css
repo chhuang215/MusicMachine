@@ -24,7 +24,9 @@ body {
   background: white;
 }
 .soundblock{
-  padding:30px;
+  margin: 13px;
+  padding: 10px;
+  background:rgba(0, 141, 193, 0.15);
 }
 
 header {
