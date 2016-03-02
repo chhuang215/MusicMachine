@@ -23,6 +23,9 @@ body {
   min-height: 100%;
   background: white;
 }
+.soundblock{
+  padding:30px;
+}
 
 header {
   background: #d2edf4;
@@ -31,18 +34,17 @@ header {
   position: relative;
 }
 
-#login-buttons {
-  display: block;
-}
-
 h1 {
-  font-size: 1.5em;
+  /*font-size: 1.5em;*/
   margin: 0;
   margin-bottom: 10px;
   display: inline-block;
   margin-right: 1em;
 }
-
+/*
+#login-buttons {
+  display: block;
+}
 form {
   margin-top: 10px;
   margin-bottom: -10px;
@@ -109,7 +111,7 @@ header .hide-completed {
 .toggle-private {
   margin-left: 5px;
 }
-
+*/
 @media (max-width: 600px) {
   li {
     padding: 12px 15px;
